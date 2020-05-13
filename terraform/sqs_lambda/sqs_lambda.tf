@@ -4,7 +4,7 @@ module "sqs_lambda" {
 
   cloudwatch_event_rule_id  = var.cloudwatch_event_rule_id
   cloudwatch_event_rule_arn = var.cloudwatch_event_rule_arn
-  function_name             = "CloudTrailLogFileValidationDisabled"
+  function_name             = "CloudtrailLogFileValidationDisabled"
   source_code_dir           = "${path.module}/../../source"
   handler                   = "reflex_aws_cloudtrail_log_file_validation_disabled.lambda_handler"
   lambda_runtime            = "python3.7"
@@ -12,10 +12,10 @@ module "sqs_lambda" {
     SNS_TOPIC = var.sns_topic_arn
   }
 
-  queue_name    = "CloudTrailLogFileValidationDisabled"
+  queue_name    = "CloudtrailLogFileValidationDisabled"
   delay_seconds = 0
 
-  target_id = "CloudTrailLogFileValidationDisabled"
+  target_id = "CloudtrailLogFileValidationDisabled"
 
   sns_topic_arn  = var.sns_topic_arn
   sqs_kms_key_id = var.reflex_kms_key_id
