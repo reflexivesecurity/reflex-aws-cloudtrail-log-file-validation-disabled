@@ -9,14 +9,16 @@ from reflex_core import AWSRule, subscription_confirmation
 
 class CloudTrailLogFileValidationDisabled(AWSRule):
     """ Rule to detect CloudTrail File Validation disabled. """
+
     def __init__(self, event):
         super().__init__(event)
 
     def extract_event_data(self, event):
         """ Extract required event data """
         self.trail_name = event["detail"]["responseElements"]["name"]
-        self.log_validation_enabled = event["detail"]["responseElements"]["logFileValidationEnabled"]
-
+        self.log_validation_enabled = event["detail"]["responseElements"][
+            "logFileValidationEnabled"
+        ]
 
     def resource_compliant(self):
         """
@@ -34,8 +36,9 @@ class CloudTrailLogFileValidationDisabled(AWSRule):
 def lambda_handler(event, _):
     """ Handles the incoming event """
     print(event)
-    if subscription_confirmation.is_subscription_confirmation(event):
-        subscription_confirmation.confirm_subscription(event)
+    event_payload = json.loads(event["Records"][0]["body"])
+    if subscription_confirmation.is_subscription_confirmation(event_payload):
+        subscription_confirmation.confirm_subscription(event_payload)
         return
-    rule = CloudTrailLogFileValidationDisabled(json.loads(event["Records"][0]["body"]))
+    rule = CloudTrailLogFileValidationDisabled(event_payload)
     rule.run_compliance_rule()
