@@ -33,7 +33,7 @@ class CloudTrailLogFileValidationDisabled(AWSRule):
         self.turn_on_log_validation()
 
     def turn_on_log_validation(self):
-        self.client.update_trail(Name=self.bucket_name, EnableLogFileValidation=True)
+        self.client.update_trail(Name=self.trail_name, EnableLogFileValidation=True)
 
     def get_remediation_message(self):
         """ Returns a message about the remediation action that occurred """
