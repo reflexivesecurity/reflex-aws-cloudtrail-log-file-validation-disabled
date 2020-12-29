@@ -28,9 +28,19 @@ class CloudTrailLogFileValidationDisabled(AWSRule):
         """
         return self.log_validation_enabled
 
+    def remediate(self):
+        """ Fix the non-compliant resource """
+        self.turn_on_log_validation()
+
+    def turn_on_log_validation(self):
+        self.client.update_trail(Name=self.trail_name, EnableLogFileValidation=True)
+
     def get_remediation_message(self):
         """ Returns a message about the remediation action that occurred """
-        return f"The CloudTrail trail {self.trail_name} has log validation disabled."
+        message = f"The CloudTrail trail {self.trail_name} has log validation disabled."
+        if self.should_remediate():
+            message += " Log validation has been re-enabled."
+        return message
 
 
 def lambda_handler(event, _):
